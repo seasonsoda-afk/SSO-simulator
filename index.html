@@ -236,12 +236,6 @@
       </div>
     </div>
 
-    <div class="fld">
-      <label>買付手数料が無料の銘柄</label>
-      <label><input type="checkbox" id="freeBuySso"> SSO</label>
-      <label><input type="checkbox" id="freeBuySpxl"> SPXL</label>
-    </div>
-
     <button class="run" id="runBtn">計算する</button>
     <details style="margin-top:12px"><summary>計算方法</summary>
       <p class="hint">前営業日のシグナルで当日の終値に約定し、保有中に翌営業日以降の値動きが反映されます。金利判定は確定済みの前月平均を使用します。</p>
@@ -443,7 +437,7 @@ const SimEngine = (function() {
       if (amount <= 0 || held === 'cash') return;
       nTrades++;
       if (held === 'mmf') return;
-      const fee = p.freeBuy?.includes(held) ? 0 : feeFor(amount);
+      const fee = feeFor(amount);
       balance -= fee;
       basis += amount; // Purchase commissions are part of acquisition cost.
       totalFee += fee;
@@ -587,7 +581,6 @@ function gather(){
     initialAmt:investment==='積立のみ'?0:+$('initAmt').value,
     monthlyAmt:investment==='一括のみ'?0:+$('monAmt').value,
     feeRate:(+$('feeRate').value)/100, feeCap:+$('feeCap').value,
-    freeBuy:['sso','spxl'].filter((_, i)=>$(i===0?'freeBuySso':'freeBuySpxl').checked),
     taxRate:(tax==='非課税')?0:(+$('taxRate').value)/100
   };
 }
